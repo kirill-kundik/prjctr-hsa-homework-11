@@ -8,7 +8,7 @@ It was done as a simple web-server using fastapi python lib.
 
 ## Prerequisites
 
-* Installed [Docker](https://www.docker.com/products/docker-desktop/).
+* Installed [Docker](https://www.docker.com/products/docker-desktop/)
 
 ## Start
 
