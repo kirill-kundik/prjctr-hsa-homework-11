@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.9
+    environment:
+      - discovery.type=single-node
+      - cluster.name=docker-cluster
+      - "ES_JAVA_OPTS=-Xmx512m -Xms512m"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    healthcheck:
+      test: [ "CMD-SHELL", "curl --silent --fail localhost:9200/_cluster/health || exit 1" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  app:
+    build: .
+    restart: always
+    depends_on:
+      - elasticsearch
+    environment:
+      ELASTIC_HOST: elasticsearch
+      ELASTIC_PORT: 9200
+    ports:
+      - "8080:8080"
+
+volumes:
+  esdata: { }
